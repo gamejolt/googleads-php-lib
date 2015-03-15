@@ -216,7 +216,7 @@ abstract class AdsSoapClient extends SoapClient {
    * @return mixed the return from the parent __soapCall
    * @throws SOAPFault if there was an exception making the request
    */
-  function __soapCall($function_name, $arguments, $options = NULL,
+  function __soapCall($function_name, $arguments, $options = array(),
       $input_headers = NULL, &$output_headers = NULL) {
     DeprecationUtils::CheckUsingClientLogin($this->user);
     try {
