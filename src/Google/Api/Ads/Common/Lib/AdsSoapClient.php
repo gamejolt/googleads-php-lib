@@ -168,9 +168,9 @@ abstract class AdsSoapClient extends SoapClient {
    * @param string $serviceName the name of the service which is making this
    *     call
    * @param string $serviceNamespace the namespace of the service
-   * @access protected
+   * @access public
    */
-  protected function __construct($wsdl, array $options, AdsUser $user,
+  public function __construct($wsdl, array $options, AdsUser $user,
       $serviceName, $serviceNamespace) {
     $this->user = $user;
     $this->serviceName = $serviceName;
