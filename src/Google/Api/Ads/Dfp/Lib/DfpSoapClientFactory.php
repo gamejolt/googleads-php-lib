@@ -60,7 +60,7 @@ class DfpSoapClientFactory extends SoapClientFactory {
    */
   public function DoRequireOnce($serviceName) {
     require_once implode("/", array(dirname(__FILE__), '..',
-        'v201403', $serviceName . '.php'));
+        $this->GetVersion(), $serviceName . '.php'));
   }
 }
 
