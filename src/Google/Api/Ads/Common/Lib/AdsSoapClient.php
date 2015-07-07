@@ -259,13 +259,13 @@ abstract class AdsSoapClient extends SoapClient {
           . $domException->getMessage(), E_USER_NOTICE);
     }
 
-    $level = isset($e) ? Logger::$ERROR : Logger::$INFO;
+    $level = isset($e) ? \GoogleApi\Logger::$ERROR : \GoogleApi\Logger::$INFO;
     $this->LogSoapXml($level);
     $this->LogRequestInfo($level);
   }
 
   /**
-   * Logs the SOAP XML to the Logger::$SOAP_XML_LOG log after the request has
+   * Logs the SOAP XML to the \GoogleApi\Logger::$SOAP_XML_LOG log after the request has
    * transformed by PrepareRequest() and both the request and response have
    * been sanitized by RemoveSensitiveInfo().
    * @param string $level the log level to use
@@ -278,11 +278,11 @@ abstract class AdsSoapClient extends SoapClient {
         XmlUtils::PrettyPrint($this->lastRequest),
         trim($this->__getLastResponseHeaders()),
         XmlUtils::PrettyPrint($this->lastResponse));
-    Logger::log(Logger::$SOAP_XML_LOG, $message, $level);
+    \GoogleApi\Logger::log(\GoogleApi\Logger::$SOAP_XML_LOG, $message, $level);
   }
 
   /**
-   * Logs the request info to the Logger::$REQUEST_INFO_LOG log the request has
+   * Logs the request info to the \GoogleApi\Logger::$REQUEST_INFO_LOG log the request has
    * transformed by PrepareRequest() and both the request has been sanitized by
    * RemoveSensitiveInfo().
    * @param string $level the log level to use
@@ -292,7 +292,7 @@ abstract class AdsSoapClient extends SoapClient {
   private function LogRequestInfo($level) {
     $message = $this->GenerateRequestInfoMessage($this->lastRequest,
         $this->lastResponse, $this->lastSoapFault);
-    Logger::log(Logger::$REQUEST_INFO_LOG, $message, $level);
+    \GoogleApi\Logger::log(\GoogleApi\Logger::$REQUEST_INFO_LOG, $message, $level);
   }
 
   /**

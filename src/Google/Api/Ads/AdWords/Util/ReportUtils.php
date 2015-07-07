@@ -364,7 +364,7 @@ class ReportUtils {
    */
   private static function LogRequest($requestHeaders, $responseCode,
       $params = null, $exception = null) {
-    $level = isset($exception) ? Logger::$ERROR : Logger::$INFO;
+    $level = isset($exception) ? \GoogleApi\Logger::$ERROR : \GoogleApi\Logger::$INFO;
     $messageParts = array();
     $messageParts[] = trim($requestHeaders);
     $messageParts[] = ''; // Blank line for readability.
@@ -379,7 +379,7 @@ class ReportUtils {
     }
     $messageParts[] = ''; // Blank line for readability.
     $message = implode("\n", $messageParts);
-    Logger::Log(self::$LOG_NAME, $message, $level);
+    \GoogleApi\Logger::Log(self::$LOG_NAME, $message, $level);
   }
 }
 

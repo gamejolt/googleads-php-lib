@@ -137,12 +137,12 @@ abstract class AdsUser {
    * directory.
    */
   protected function InitLogs() {
-    Logger::LogToFile(Logger::$SOAP_XML_LOG,
+    \GoogleApi\Logger::LogToFile(\GoogleApi\Logger::$SOAP_XML_LOG,
         $this->logsDirectory . "/soap_xml.log");
-    Logger::LogToFile(Logger::$REQUEST_INFO_LOG,
+    \GoogleApi\Logger::LogToFile(\GoogleApi\Logger::$REQUEST_INFO_LOG,
         $this->logsDirectory . "/request_info.log");
-    Logger::SetLogLevel(Logger::$SOAP_XML_LOG, Logger::$FATAL);
-    Logger::SetLogLevel(Logger::$REQUEST_INFO_LOG, Logger::$FATAL);
+    \GoogleApi\Logger::SetLogLevel(\GoogleApi\Logger::$SOAP_XML_LOG, \GoogleApi\Logger::$FATAL);
+    \GoogleApi\Logger::SetLogLevel(\GoogleApi\Logger::$REQUEST_INFO_LOG, \GoogleApi\Logger::$FATAL);
   }
 
   /**
@@ -150,24 +150,24 @@ abstract class AdsUser {
    * the full SOAP XML request and response only when an error occurs.
    */
   public function LogDefaults() {
-    Logger::SetLogLevel(Logger::$SOAP_XML_LOG, Logger::$ERROR);
-    Logger::SetLogLevel(Logger::$REQUEST_INFO_LOG, Logger::$INFO);
+    \GoogleApi\Logger::SetLogLevel(\GoogleApi\Logger::$SOAP_XML_LOG, \GoogleApi\Logger::$ERROR);
+    \GoogleApi\Logger::SetLogLevel(\GoogleApi\Logger::$REQUEST_INFO_LOG, \GoogleApi\Logger::$INFO);
   }
 
   /**
    * Configures the library to only log requests that return an error.
    */
   public function LogErrors() {
-    Logger::SetLogLevel(Logger::$SOAP_XML_LOG, Logger::$ERROR);
-    Logger::SetLogLevel(Logger::$REQUEST_INFO_LOG, Logger::$ERROR);
+    \GoogleApi\Logger::SetLogLevel(\GoogleApi\Logger::$SOAP_XML_LOG, \GoogleApi\Logger::$ERROR);
+    \GoogleApi\Logger::SetLogLevel(\GoogleApi\Logger::$REQUEST_INFO_LOG, \GoogleApi\Logger::$ERROR);
   }
 
   /**
    * Configures the library to log all requests.
    */
   public function LogAll() {
-    Logger::SetLogLevel(Logger::$SOAP_XML_LOG, Logger::$INFO);
-    Logger::SetLogLevel(Logger::$REQUEST_INFO_LOG, Logger::$INFO);
+    \GoogleApi\Logger::SetLogLevel(\GoogleApi\Logger::$SOAP_XML_LOG, \GoogleApi\Logger::$INFO);
+    \GoogleApi\Logger::SetLogLevel(\GoogleApi\Logger::$REQUEST_INFO_LOG, \GoogleApi\Logger::$INFO);
   }
 
   /**
