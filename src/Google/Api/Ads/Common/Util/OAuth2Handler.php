@@ -1,10 +1,6 @@
 <?php
 /**
- * An abstract class for Google OAuth 2.0 flow.
- *
- * PHP version 5
- *
- * Copyright 2011, Google Inc. All Rights Reserved.
+ * Copyright 2012, Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,13 +20,12 @@
  * @copyright  2012, Google Inc. All Rights Reserved.
  * @license    http://www.apache.org/licenses/LICENSE-2.0 Apache License,
  *             Version 2.0
- * @author     Eric Koleda
- * @author     Vincent Tsao
  */
 require_once 'Google/Api/Ads/Common/Util/UrlUtils.php';
 
 /**
  * An abstract class for Google OAuth2 flow.
+ *
  * @package GoogleApiAdsCommon
  * @subpackage Util
  */
@@ -41,20 +36,18 @@ abstract class OAuth2Handler {
    */
   const REFRESH_BUFFER = 60;
   const DEFAULT_REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob';
-  const AUTHORIZE_ENDPOINT = 'https://accounts.google.com/o/oauth2/auth';
-  const ACCESS_ENDPOINT = 'https://accounts.google.com/o/oauth2/token';
+  const AUTHORIZE_ENDPOINT = 'https://accounts.google.com/o/oauth2/v2/auth';
+  const ACCESS_ENDPOINT = 'https://www.googleapis.com/oauth2/v4/token';
 
-  private $server;
-  protected $scope;
+  private $scopes;
+  private $tokenUrlServer;
 
   /**
-   * Constructor.
-   *
-   * @param string $server the auth server to make OAuth2 request against
+   * @param array $scopes optional, Google API scopes this handler should use
    */
-  public function __construct($server = null, $scope = null) {
-    $this->server = $server;
-    $this->scope = $scope;
+  public function __construct(array $scopes = null) {
+    $this->scopes = $scopes === null ? array() : $scopes;
+    $this->tokenUrlServer = self::ACCESS_ENDPOINT;
   }
 
   /**
@@ -77,11 +70,12 @@ abstract class OAuth2Handler {
     $redirectUri = is_null($redirectUri) ?
         self::DEFAULT_REDIRECT_URI : $redirectUri;
 
+    $scopes = implode(' ', $this->scopes);
     $params = array_merge($params, array(
         'response_type' => 'code',
         'client_id' => $credentials['client_id'],
         'redirect_uri' => $redirectUri,
-        'scope' => $this->scope,
+        'scope' => $scopes,
         'access_type' => $offline ? 'offline' : 'online'
     ));
     return $this->GetAuthorizeEndpoint($params);
@@ -251,7 +245,7 @@ abstract class OAuth2Handler {
    * @return string the access endpoint
    */
   protected function GetAccessEndpoint($params = null) {
-    return $this->GetEndpoint(self::ACCESS_ENDPOINT, $params);
+    return $this->GetEndpoint($this->tokenUrlServer, $params);
   }
 
   /**
@@ -261,11 +255,23 @@ abstract class OAuth2Handler {
    * @return string the endpoint
    */
   private function GetEndpoint($endpoint, $params = null) {
-    $endpoint = UrlUtils::AddParamsToUrl($endpoint, $params);
-    if (!empty($this->server)) {
-      $endpoint = UrlUtils::ReplaceServerInUrl($endpoint, $this->server);
-    }
-    return $endpoint;
+    return UrlUtils::AddParamsToUrl($endpoint, $params);
+  }
+
+  /**
+   * Gets OAuth2 scopes.
+   * @return array the list of OAuth2 scopes
+   */
+  public function GetScopes() {
+    return $this->scopes;
+  }
+
+  /**
+   * Sets OAuth2 scopes.
+   * @param array the list of OAuth2 scopes
+   */
+  public function SetScopes($scopes) {
+    $this->scopes = $scopes;
   }
 }
 
@@ -279,4 +285,3 @@ class OAuth2Exception extends Exception {
     parent::__construct($message, $code);
   }
 }
-
